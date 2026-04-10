@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../generated/class-service-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model SchoolClass {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
