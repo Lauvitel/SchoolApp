@@ -40,6 +40,21 @@ services:
     volumes:
       - postgres_grades_data:/var/lib/postgresql/data
 
+  user-service:
+    build:
+      context: .
+      dockerfile: apps/user-service/Dockerfile
+    container_name: schoolinc_user_service
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://postgres:postgres@postgres-users:5432/schoolinc_users?schema=public
+      JWT_SECRET: ${JWT_SECRET:-schoolinc_jwt_secret}
+    depends_on:
+      - postgres-users
+
 volumes:
   postgres_users_data:
   postgres_classes_data:
