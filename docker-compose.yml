@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  postgres-users:
+    image: postgres:16
+    container_name: schoolinc_postgres_users
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: schoolinc_users
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_users_data:/var/lib/postgresql/data
+
+  postgres-classes:
+    image: postgres:16
+    container_name: schoolinc_postgres_classes
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: schoolinc_classes
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_classes_data:/var/lib/postgresql/data
+
+  postgres-grades:
+    image: postgres:16
+    container_name: schoolinc_postgres_grades
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: schoolinc_grades
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_grades_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_users_data:
+  postgres_classes_data:
+  postgres_grades_data:
