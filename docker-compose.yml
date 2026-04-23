@@ -70,6 +70,21 @@ services:
     depends_on:
       - postgres-classes
 
+  grade-service:
+    build:
+      context: .
+      dockerfile: apps/grade-service/Dockerfile
+    container_name: schoolinc_grade_service
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      DATABASE_URL: postgresql://postgres:postgres@postgres-grades:5432/schoolinc_grades?schema=public
+      JWT_SECRET: ${JWT_SECRET:-schoolinc_jwt_secret}
+    depends_on:
+      - postgres-grades
+
 volumes:
   postgres_users_data:
   postgres_classes_data:

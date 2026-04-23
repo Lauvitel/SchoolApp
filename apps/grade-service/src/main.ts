@@ -1,8 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { GradeServiceModule } from './grade-service.module';
+import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(GradeServiceModule);
-  await app.listen(process.env.port ?? 3000);
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+  await app.listen(process.env.PORT || 3003);
 }
-bootstrap();
+void bootstrap();
