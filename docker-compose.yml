@@ -55,6 +55,21 @@ services:
     depends_on:
       - postgres-users
 
+  class-service:
+    build:
+      context: .
+      dockerfile: apps/class-service/Dockerfile
+    container_name: schoolinc_class_service
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      DATABASE_URL: postgresql://postgres:postgres@postgres-classes:5432/schoolinc_classes?schema=public
+      JWT_SECRET: ${JWT_SECRET:-schoolinc_jwt_secret}
+    depends_on:
+      - postgres-classes
+
 volumes:
   postgres_users_data:
   postgres_classes_data:
