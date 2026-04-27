@@ -6,8 +6,8 @@ RUN npm ci
 
 COPY tsconfig.json nest-cli.json ./
 COPY apps/user-service ./apps/user-service
-COPY generated/user-service-client ./generated/user-service-client
 
+RUN npx prisma generate --config=apps/user-service/prisma/prisma.config.ts
 RUN npx nest build user-service
 
 FROM node:20-alpine AS production

@@ -6,8 +6,8 @@ RUN npm ci
 
 COPY tsconfig.json nest-cli.json ./
 COPY apps/grade-service ./apps/grade-service
-COPY generated/grade-service-client ./generated/grade-service-client
 
+RUN npx prisma generate --config=apps/grade-service/prisma/prisma.config.ts
 RUN npx nest build grade-service
 
 FROM node:20-alpine AS production

@@ -28,6 +28,7 @@
     "prisma:generate:all": "npm run prisma:generate:user && npm run prisma:generate:class && npm run prisma:generate:grade"
   },
   "dependencies": {
+    "@apollo/gateway": "^2.13.3",
     "@apollo/subgraph": "^2.13.3",
     "@as-integrations/express5": "^1.1.2",
     "@nestjs/apollo": "^13.2.5",
