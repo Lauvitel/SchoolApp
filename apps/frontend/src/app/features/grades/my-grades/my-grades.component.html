@@ -1,0 +1,36 @@
+<div class="page-container">
+  <h2>Mes notes</h2>
+
+  @if (loading) {
+    <p class="loading">Chargement...</p>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && grades.length === 0 && !errorMessage) {
+    <p class="empty">Aucune note pour le moment.</p>
+  }
+
+  @if (grades.length > 0) {
+    <table class="grades-table">
+      <thead>
+        <tr>
+          <th>Matière</th>
+          <th>Note</th>
+          <th>Classe</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (grade of grades; track grade.id) {
+          <tr>
+            <td>{{ grade.courseName }}</td>
+            <td class="grade-value">{{ grade.value }}/20</td>
+            <td>{{ grade.classId || '—' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

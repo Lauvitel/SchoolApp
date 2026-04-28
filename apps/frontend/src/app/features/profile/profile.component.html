@@ -1,0 +1,28 @@
+<div class="page-container">
+  <h2>Mon profil</h2>
+
+  @if (loading) {
+    <p class="loading">Chargement...</p>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (user) {
+    <div class="profile-card">
+      <div class="profile-row">
+        <span class="label">Email</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+      <div class="profile-row">
+        <span class="label">Pseudo</span>
+        <span class="value">{{ user.pseudo }}</span>
+      </div>
+      <div class="profile-row">
+        <span class="label">Rôle</span>
+        <span class="value badge" [class.badge-professor]="user.role === 'PROFESSOR'">{{ user.role }}</span>
+      </div>
+    </div>
+  }
+</div>

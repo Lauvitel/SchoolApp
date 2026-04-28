@@ -1,0 +1,29 @@
+<div class="page-container">
+  @if (loading) {
+    <p class="loading">Chargement...</p>
+  }
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+  @if (schoolClass) {
+    <h2>{{ schoolClass.name }}</h2>
+    <div class="detail-card">
+      <div class="detail-row">
+        <span class="label">Nombre d'étudiants</span>
+        <span class="value">{{ schoolClass.studentCount }}</span>
+      </div>
+    </div>
+    <h3>Étudiants inscrits</h3>
+    @if (schoolClass.students && schoolClass.students.length > 0) {
+      <ul class="students-list">
+        @for (student of schoolClass.students; track student.id) {
+          <li>
+            <span class="student-id">{{ student.studentId }}</span>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="empty">Aucun étudiant inscrit dans cette classe.</p>
+    }
+  }
+</div>

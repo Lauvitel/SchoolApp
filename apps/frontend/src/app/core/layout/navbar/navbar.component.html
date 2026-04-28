@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">SchoolInc</a>
+  </div>
+
+  <div class="navbar-links">
+    <a routerLink="/classes" routerLinkActive="active">Classes</a>
+
+    @if (currentUser$ | async; as user) {
+      <a routerLink="/profile" routerLinkActive="active">Profil</a>
+      <a routerLink="/my-grades" routerLinkActive="active">Mes notes</a>
+
+      @if (user.role === 'PROFESSOR') {
+        <a routerLink="/professor" routerLinkActive="active">Dashboard Prof</a>
+      }
+
+      <span class="navbar-user">{{ user.pseudo }} ({{ user.role }})</span>
+      <button class="btn-logout" (click)="logout()">Déconnexion</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Connexion</a>
+      <a routerLink="/register" routerLinkActive="active">Inscription</a>
+    }
+  </div>
+</nav>

@@ -11,6 +11,11 @@ services:
       - "5433:5432"
     volumes:
       - postgres_users_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   postgres-classes:
     image: postgres:16
@@ -24,6 +29,11 @@ services:
       - "5434:5432"
     volumes:
       - postgres_classes_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   postgres-grades:
     image: postgres:16
@@ -37,6 +47,11 @@ services:
       - "5435:5432"
     volumes:
       - postgres_grades_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   user-service:
     build:
@@ -51,7 +66,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres-users:5432/schoolinc_users?schema=public
       JWT_SECRET: ${JWT_SECRET:-schoolinc_jwt_secret}
     depends_on:
-      - postgres-users
+      postgres-users:
+        condition: service_healthy
 
   class-service:
     build:
@@ -66,7 +82,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres-classes:5432/schoolinc_classes?schema=public
       JWT_SECRET: ${JWT_SECRET:-schoolinc_jwt_secret}
     depends_on:
-      - postgres-classes
+      postgres-classes:
+        condition: service_healthy
 
   grade-service:
     build:
@@ -81,7 +98,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres-grades:5432/schoolinc_grades?schema=public
       JWT_SECRET: ${JWT_SECRET:-schoolinc_jwt_secret}
     depends_on:
-      - postgres-grades
+      postgres-grades:
+        condition: service_healthy
 
   gateway:
     build:
@@ -100,6 +118,17 @@ services:
       - user-service
       - class-service
       - grade-service
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: schoolinc_frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway
 
 volumes:
   postgres_users_data:

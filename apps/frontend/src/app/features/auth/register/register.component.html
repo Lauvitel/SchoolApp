@@ -1,0 +1,42 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <h2>Inscription</h2>
+
+    @if (errorMessage) {
+      <div class="error-message">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="exemple@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="pseudo">Pseudo</label>
+        <input id="pseudo" type="text" formControlName="pseudo" placeholder="Votre pseudo" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password" placeholder="6 caractères minimum" />
+      </div>
+
+      <div class="form-group">
+        <label for="role">Rôle</label>
+        <select id="role" formControlName="role">
+          <option value="STUDENT">Étudiant</option>
+          <option value="PROFESSOR">Professeur</option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid || loading">
+        {{ loading ? 'Inscription...' : "S'inscrire" }}
+      </button>
+    </form>
+
+    <p class="auth-link">
+      Déjà un compte ? <a routerLink="/login">Se connecter</a>
+    </p>
+  </div>
+</div>

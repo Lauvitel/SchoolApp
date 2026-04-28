@@ -1,0 +1,24 @@
+<div class="page-container">
+  <h2>Liste des classes</h2>
+
+  @if (loading) {
+    <p class="loading">Chargement...</p>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && classes.length === 0 && !errorMessage) {
+    <p class="empty">Aucune classe disponible.</p>
+  }
+
+  <div class="classes-grid">
+    @for (cls of classes; track cls.id) {
+      <a [routerLink]="['/classes', cls.id]" class="class-card">
+        <h3>{{ cls.name }}</h3>
+        <p class="student-count">{{ cls.studentCount }} étudiant{{ cls.studentCount > 1 ? 's' : '' }}</p>
+      </a>
+    }
+  </div>
+</div>

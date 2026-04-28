@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "schoolinc",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -25,10 +25,21 @@
     "prisma:generate:user": "npx prisma generate --config=apps/user-service/prisma/prisma.config.ts",
     "prisma:generate:class": "npx prisma generate --config=apps/class-service/prisma/prisma.config.ts",
     "prisma:generate:grade": "npx prisma generate --config=apps/grade-service/prisma/prisma.config.ts",
-    "prisma:generate:all": "npm run prisma:generate:user && npm run prisma:generate:class && npm run prisma:generate:grade"
+    "prisma:generate:all": "npm run prisma:generate:user && npm run prisma:generate:class && npm run prisma:generate:grade",
+    "start:frontend": "npx ng serve",
+    "build:frontend": "npx ng build schoolinc-app --configuration=production"
   },
   "dependencies": {
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-browser-dynamic": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "@apollo/client": "^4.1.9",
     "@apollo/gateway": "^2.13.3",
+    "@apollo/server": "^5.5.0",
     "@apollo/subgraph": "^2.13.3",
     "@as-integrations/express5": "^1.1.2",
     "@nestjs/apollo": "^13.2.5",
@@ -41,6 +52,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "apollo-angular": "^13.0.0",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
@@ -51,9 +63,14 @@
     "pg": "^8.20.0",
     "prisma": "^7.7.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.24",
+    "@angular/cli": "^19.2.24",
+    "@angular/compiler-cli": "^19.2.0",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@nestjs/cli": "^11.0.0",
@@ -61,6 +78,7 @@
     "@nestjs/testing": "^11.0.1",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
+    "@types/jasmine": "~5.1.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/passport-jwt": "^4.0.1",
@@ -70,7 +88,13 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^17.0.0",
+    "jasmine-core": "~5.6.0",
     "jest": "^30.0.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
@@ -79,8 +103,9 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript": "~5.8.0",
+    "typescript-eslint": "^8.20.0",
+    "webpack": "^5.106.2"
   },
   "jest": {
     "moduleFileExtensions": [

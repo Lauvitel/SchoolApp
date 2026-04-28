@@ -1,0 +1,79 @@
+.page-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+
+  h2 {
+    color: #1e293b;
+    margin-bottom: 24px;
+  }
+}
+
+.loading {
+  color: #64748b;
+}
+
+.error-message {
+  background-color: #fef2f2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.empty {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.grades-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+
+  th, td {
+    padding: 14px 18px;
+    text-align: left;
+  }
+
+  thead {
+    background-color: #f8fafc;
+
+    th {
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: #f8fafc;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  td {
+    color: #334155;
+    font-size: 0.95rem;
+  }
+
+  .grade-value {
+    font-weight: 700;
+    color: #2563eb;
+  }
+}

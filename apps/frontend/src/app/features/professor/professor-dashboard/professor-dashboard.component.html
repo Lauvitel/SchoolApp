@@ -1,0 +1,26 @@
+<div class="page-container">
+  @if (currentUser$ | async; as user) {
+    <h2>Bienvenue, {{ user.pseudo }} 👋</h2>
+    <p class="subtitle">Tableau de bord professeur</p>
+  }
+
+  <div class="dashboard-grid">
+    <a routerLink="/classes" class="dashboard-card">
+      <div class="card-icon">📚</div>
+      <h3>Classes</h3>
+      <p>Voir et gérer les classes</p>
+    </a>
+
+    <a routerLink="/my-grades" class="dashboard-card">
+      <div class="card-icon">📝</div>
+      <h3>Notes</h3>
+      <p>Consulter et gérer les notes</p>
+    </a>
+
+    <a routerLink="/profile" class="dashboard-card">
+      <div class="card-icon">👤</div>
+      <h3>Mon profil</h3>
+      <p>Voir mes informations</p>
+    </a>
+  </div>
+</div>

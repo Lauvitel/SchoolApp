@@ -1,0 +1,61 @@
+.page-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+
+  h2 {
+    color: #1e293b;
+    margin-bottom: 24px;
+  }
+}
+
+.loading {
+  color: #64748b;
+}
+
+.error-message {
+  background-color: #fef2f2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.empty {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.class-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    color: #1e293b;
+    font-size: 1.1rem;
+  }
+
+  .student-count {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.9rem;
+  }
+}
