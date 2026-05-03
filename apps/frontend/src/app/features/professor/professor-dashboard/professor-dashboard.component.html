@@ -1,20 +1,32 @@
 <div class="page-container">
   @if (currentUser$ | async; as user) {
-    <h2>Bienvenue, {{ user.pseudo }} 👋</h2>
+    <h2>Bienvenue, {{ user.pseudo }}</h2>
     <p class="subtitle">Tableau de bord professeur</p>
   }
 
   <div class="dashboard-grid">
-    <a routerLink="/classes" class="dashboard-card">
+    <a routerLink="/professor/classes" class="dashboard-card">
       <div class="card-icon">📚</div>
-      <h3>Classes</h3>
-      <p>Voir et gérer les classes</p>
+      <h3>Gestion des classes</h3>
+      <p>Creer, modifier, supprimer des classes</p>
     </a>
 
-    <a routerLink="/my-grades" class="dashboard-card">
+    <a routerLink="/professor/grades" class="dashboard-card">
       <div class="card-icon">📝</div>
-      <h3>Notes</h3>
-      <p>Consulter et gérer les notes</p>
+      <h3>Gestion des notes</h3>
+      <p>Attribuer et gerer les notes</p>
+    </a>
+
+    <a routerLink="/professor/stats" class="dashboard-card">
+      <div class="card-icon">📊</div>
+      <h3>Statistiques</h3>
+      <p>Moyenne, mediane, min, max</p>
+    </a>
+
+    <a routerLink="/classes" class="dashboard-card">
+      <div class="card-icon">👀</div>
+      <h3>Voir les classes</h3>
+      <p>Consulter la liste des classes</p>
     </a>
 
     <a routerLink="/profile" class="dashboard-card">

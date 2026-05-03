@@ -8,6 +8,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { UserRole } from '../../../core/models/user.model';
+import { getErrorMessage } from '../../../core/utils/error.utils';
 
 @Component({
   selector: 'app-register',
@@ -40,21 +41,29 @@ export class RegisterComponent {
     this.loading = true;
     this.errorMessage = null;
 
-    const { email, pseudo, password, role } = this.registerForm.value;
+    const { email, pseudo, password, role } = this.registerForm.value as {
+      email: string;
+      pseudo: string;
+      password: string;
+      role: string;
+    };
     this.authService
       .register({ email, pseudo, password, role: role as UserRole })
       .subscribe({
         next: (response) => {
           this.loading = false;
           if (response.user.role === 'PROFESSOR') {
-            this.router.navigate(['/professor']);
+            void this.router.navigate(['/professor']);
           } else {
-            this.router.navigate(['/profile']);
+            void this.router.navigate(['/profile']);
           }
         },
-        error: (err) => {
+        error: (err: unknown) => {
           this.loading = false;
-          this.errorMessage = err?.message || "Erreur lors de l'inscription";
+          this.errorMessage = getErrorMessage(
+            err,
+            "Erreur lors de l'inscription",
+          );
         },
       });
   }

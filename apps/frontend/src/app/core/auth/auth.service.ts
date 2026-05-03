@@ -55,8 +55,8 @@ export class AuthService {
     this.tokenService.clearToken();
     localStorage.removeItem(USER_KEY);
     this.currentUserSubject.next(null);
-    this.apollo.client.clearStore();
-    this.router.navigate(['/login']);
+    void this.apollo.client.clearStore();
+    void this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {

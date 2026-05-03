@@ -3,6 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { RouterLink } from '@angular/router';
 import { CLASSES_QUERY } from '../../../core/graphql/classes.graphql';
 import { SchoolClass } from '../../../core/models/class.model';
+import { getErrorMessage } from '../../../core/utils/error.utils';
 
 @Component({
   selector: 'app-classes-list',
@@ -26,10 +27,12 @@ export class ClassesListComponent implements OnInit {
           this.loading = loading;
           this.classes = (data?.classes as SchoolClass[]) ?? [];
         },
-        error: (err) => {
+        error: (err: unknown) => {
           this.loading = false;
-          this.errorMessage =
-            err?.message || 'Erreur lors du chargement des classes';
+          this.errorMessage = getErrorMessage(
+            err,
+            'Erreur lors du chargement des classes',
+          );
         },
       });
   }

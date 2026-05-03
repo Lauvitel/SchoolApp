@@ -5,6 +5,9 @@
   @if (errorMessage) {
     <div class="error-message">{{ errorMessage }}</div>
   }
+  @if (successMessage) {
+    <div class="success-message">{{ successMessage }}</div>
+  }
   @if (schoolClass) {
     <h2>{{ schoolClass.name }}</h2>
     <div class="detail-card">
@@ -13,6 +16,19 @@
         <span class="value">{{ schoolClass.studentCount }}</span>
       </div>
     </div>
+
+    @if (isProfessor) {
+      <div class="add-student-section">
+        <h3>Ajouter un étudiant</h3>
+        <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()" class="inline-form">
+          <input type="text" formControlName="studentId" placeholder="ID de l'étudiant (UUID)" />
+          <button type="submit" class="btn btn-primary" [disabled]="addStudentForm.invalid || addingStudent">
+            {{ addingStudent ? 'Ajout...' : 'Ajouter' }}
+          </button>
+        </form>
+      </div>
+    }
+
     <h3>Étudiants inscrits</h3>
     @if (schoolClass.students && schoolClass.students.length > 0) {
       <ul class="students-list">

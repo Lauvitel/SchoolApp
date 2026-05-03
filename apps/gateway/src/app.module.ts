@@ -3,12 +3,21 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 
+interface GatewayContext {
+  req?: {
+    headers?: {
+      authorization?: string;
+    };
+  };
+}
+
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       server: {
-        context: ({ req }) => ({ req }),
+        context: ({ req }: { req: unknown }) => ({ req }),
       } as any,
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
@@ -32,15 +41,23 @@ import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
             },
           ],
         }),
-        buildService({ url }) {
+        buildService({ url }: { url?: string }) {
           return new RemoteGraphQLDataSource({
             url,
-            willSendRequest({ request, context }) {
-              if (context?.req?.headers?.authorization) {
-                request.http?.headers.set(
-                  'authorization',
-                  context.req.headers.authorization,
-                );
+            willSendRequest({
+              request,
+              context,
+            }: {
+              request: {
+                http?: {
+                  headers: { set: (key: string, value: string) => void };
+                };
+              };
+              context: GatewayContext;
+            }) {
+              const auth = context?.req?.headers?.authorization;
+              if (auth) {
+                request.http?.headers.set('authorization', auth);
               }
             },
           });

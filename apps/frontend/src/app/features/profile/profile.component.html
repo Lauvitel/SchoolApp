@@ -9,7 +9,11 @@
     <div class="error-message">{{ errorMessage }}</div>
   }
 
-  @if (user) {
+  @if (successMessage) {
+    <div class="success-message">{{ successMessage }}</div>
+  }
+
+  @if (user && !editing) {
     <div class="profile-card">
       <div class="profile-row">
         <span class="label">Email</span>
@@ -22,6 +26,55 @@
       <div class="profile-row">
         <span class="label">Rôle</span>
         <span class="value badge" [class.badge-professor]="user.role === 'PROFESSOR'">{{ user.role }}</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="startEditing()">✏️ Modifier mon profil</button>
+      <button class="btn btn-danger" (click)="confirmDelete()">🗑️ Supprimer mon compte</button>
+    </div>
+  }
+
+  @if (user && editing) {
+    <div class="profile-card">
+      <form [formGroup]="editForm" (ngSubmit)="saveProfile()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="pseudo">Pseudo</label>
+          <input id="pseudo" type="text" formControlName="pseudo" />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Nouveau mot de passe <span class="hint">(laisser vide pour ne pas changer)</span></label>
+          <input id="password" type="password" formControlName="password" placeholder="6 caractères minimum" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid || saving">
+            {{ saving ? 'Enregistrement...' : '💾 Enregistrer' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEditing()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (showDeleteConfirm) {
+    <div class="modal-overlay" (click)="cancelDelete()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h3>⚠️ Supprimer mon compte</h3>
+        <p>Cette action est <strong>irréversible</strong>. Toutes vos données seront supprimées.</p>
+        <p>Êtes-vous sûr de vouloir continuer ?</p>
+        <div class="modal-actions">
+          <button class="btn btn-danger" (click)="deleteAccount()" [disabled]="deleting">
+            {{ deleting ? 'Suppression...' : 'Oui, supprimer mon compte' }}
+          </button>
+          <button class="btn btn-secondary" (click)="cancelDelete()">Annuler</button>
+        </div>
       </div>
     </div>
   }

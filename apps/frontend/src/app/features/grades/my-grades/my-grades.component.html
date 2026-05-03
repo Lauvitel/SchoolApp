@@ -1,6 +1,19 @@
 <div class="page-container">
   <h2>Mes notes</h2>
 
+  <div class="filter-bar">
+    <input
+      type="text"
+      [(ngModel)]="filterCourseName"
+      placeholder="Filtrer par matiere..."
+      (keyup.enter)="applyFilter()"
+    />
+    <button class="btn btn-primary" (click)="applyFilter()">Filtrer</button>
+    @if (filterCourseName) {
+      <button class="btn btn-secondary" (click)="clearFilter()">Tout afficher</button>
+    }
+  </div>
+
   @if (loading) {
     <p class="loading">Chargement...</p>
   }
@@ -17,7 +30,7 @@
     <table class="grades-table">
       <thead>
         <tr>
-          <th>Matière</th>
+          <th>Matiere</th>
           <th>Note</th>
           <th>Classe</th>
         </tr>
@@ -27,7 +40,7 @@
           <tr>
             <td>{{ grade.courseName }}</td>
             <td class="grade-value">{{ grade.value }}/20</td>
-            <td>{{ grade.classId || '—' }}</td>
+            <td>{{ grade.classId || '---' }}</td>
           </tr>
         }
       </tbody>

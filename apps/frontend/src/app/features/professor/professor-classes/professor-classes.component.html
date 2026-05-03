@@ -1,0 +1,41 @@
+<div class="page-container">
+  <h2>Gestion des classes</h2>
+  @if (errorMessage) { <div class="error-message">{{ errorMessage }}</div> }
+  @if (successMessage) { <div class="success-message">{{ successMessage }}</div> }
+  <div class="card">
+    <h3>{{ editingClassId ? 'Modifier la classe' : 'Nouvelle classe' }}</h3>
+    <form [formGroup]="classForm" (ngSubmit)="saveClass()" class="inline-form">
+      <input type="text" formControlName="name" placeholder="Nom de la classe" />
+      <button type="submit" class="btn btn-primary" [disabled]="classForm.invalid || saving">
+        {{ saving ? 'Enregistrement...' : (editingClassId ? 'Modifier' : 'Creer') }}
+      </button>
+      @if (editingClassId) {
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+      }
+    </form>
+  </div>
+  @if (loading) { <p class="loading">Chargement...</p> }
+  @if (!loading && classes.length === 0) { <p class="empty">Aucune classe.</p> }
+  @if (classes.length > 0) {
+    <table class="data-table">
+      <thead><tr><th>Nom</th><th>Etudiants</th><th>Actions</th></tr></thead>
+      <tbody>
+        @for (cls of classes; track cls.id) {
+          <tr>
+            <td><a [routerLink]="['/classes', cls.id]">{{ cls.name }}</a></td>
+            <td>{{ cls.studentCount }}</td>
+            <td class="actions-cell">
+              <button class="btn btn-sm btn-secondary" (click)="startEdit(cls)">Editer</button>
+              @if (deleteConfirmId === cls.id) {
+                <button class="btn btn-sm btn-danger" (click)="deleteClass(cls.id)" [disabled]="deleting">Confirmer</button>
+                <button class="btn btn-sm btn-secondary" (click)="cancelDelete()">Non</button>
+              } @else {
+                <button class="btn btn-sm btn-danger" (click)="confirmDelete(cls.id)">Supprimer</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

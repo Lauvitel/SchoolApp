@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
+import { getErrorMessage } from '../../../core/utils/error.utils';
 
 @Component({
   selector: 'app-login',
@@ -37,19 +38,22 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = null;
 
-    const { email, password } = this.loginForm.value;
+    const { email, password } = this.loginForm.value as {
+      email: string;
+      password: string;
+    };
     this.authService.login(email, password).subscribe({
       next: (response) => {
         this.loading = false;
         if (response.user.role === 'PROFESSOR') {
-          this.router.navigate(['/professor']);
+          void this.router.navigate(['/professor']);
         } else {
-          this.router.navigate(['/profile']);
+          void this.router.navigate(['/profile']);
         }
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this.loading = false;
-        this.errorMessage = err?.message || 'Erreur lors de la connexion';
+        this.errorMessage = getErrorMessage(err, 'Erreur lors de la connexion');
       },
     });
   }

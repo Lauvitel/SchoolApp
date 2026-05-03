@@ -23,3 +23,45 @@ export const CLASS_BY_ID_QUERY = gql`
     }
   }
 `;
+
+export const CREATE_CLASS_MUTATION = gql`
+  mutation CreateClass($input: CreateClassInput!) {
+    createClass(input: $input) {
+      id
+      name
+      studentCount
+    }
+  }
+`;
+
+export const UPDATE_CLASS_MUTATION = gql`
+  mutation UpdateClass($id: ID!, $input: UpdateClassInput!) {
+    updateClass(id: $id, input: $input) {
+      id
+      name
+      studentCount
+    }
+  }
+`;
+
+export const DELETE_CLASS_MUTATION = gql`
+  mutation DeleteClass($id: ID!) {
+    deleteClass(id: $id) {
+      id
+    }
+  }
+`;
+
+export const ADD_STUDENT_TO_CLASS_MUTATION = gql`
+  mutation AddStudentToClass($input: AddStudentToClassInput!) {
+    addStudentToClass(input: $input) {
+      id
+      name
+      studentCount
+      students {
+        id
+        studentId
+      }
+    }
+  }
+`;
