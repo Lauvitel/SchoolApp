@@ -70,12 +70,20 @@
     border-radius: 6px;
     margin-bottom: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .student-id {
-    color: #475569;
-    font-family: monospace;
-    font-size: 0.9rem;
+  .student-name {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .student-email {
+    color: #64748b;
+    font-size: 0.85rem;
   }
 }
 
@@ -93,23 +101,85 @@
   }
 }
 
-.inline-form {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+.search-container {
+  position: relative;
+  margin-bottom: 12px;
+}
 
-  input {
-    flex: 1;
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 0.95rem;
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 
-    &:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  &:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  li {
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: #eff6ff;
     }
+  }
+
+  .result-pseudo {
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .result-email {
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+}
+
+.no-results {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.add-student-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background-color: #e2e8f0;
+  color: #334155;
+
+  &:hover:not(:disabled) {
+    background-color: #cbd5e1;
   }
 }
 

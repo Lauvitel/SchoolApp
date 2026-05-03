@@ -82,19 +82,17 @@ export class ClassesService {
 
   async addStudentToClass(input: AddStudentToClassInput) {
     await this.findById(input.classId);
-    const existing = await this.prisma.classStudent.findUnique({
-      where: {
-        classId_studentId: {
-          classId: input.classId,
-          studentId: input.studentId,
-        },
-      },
+
+    const alreadyInClass = await this.prisma.classStudent.findFirst({
+      where: { studentId: input.studentId },
+      include: { class: true },
     });
-    if (existing) {
+    if (alreadyInClass) {
       throw new BadRequestException(
-        'This student is already assigned to this class',
+        `This student is already assigned to class "${alreadyInClass.class.name}"`,
       );
     }
+
     await this.prisma.classStudent.create({
       data: {
         classId: input.classId,

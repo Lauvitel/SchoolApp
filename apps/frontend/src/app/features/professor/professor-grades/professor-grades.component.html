@@ -2,28 +2,89 @@
   <h2>Gestion des notes</h2>
   @if (errorMessage) { <div class="error-message">{{ errorMessage }}</div> }
   @if (successMessage) { <div class="success-message">{{ successMessage }}</div> }
+
+  <!-- Search student to view grades -->
   <div class="card">
-    <h3>Rechercher les notes d un etudiant</h3>
-    <form [formGroup]="searchForm" (ngSubmit)="searchGrades()" class="inline-form">
-      <input type="text" formControlName="studentId" placeholder="ID de l etudiant" />
-      <button type="submit" class="btn btn-primary" [disabled]="searchForm.invalid || loading">Rechercher</button>
-    </form>
+    <h3>Rechercher les notes d'un élève</h3>
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Tapez un pseudo ou un email..."
+        class="search-input"
+      />
+      @if (filteredStudents.length > 0) {
+        <ul class="search-results">
+          @for (student of filteredStudents; track student.id) {
+            <li (click)="selectStudent(student)">
+              <span class="result-pseudo">{{ student.pseudo }}</span>
+              <span class="result-email">{{ student.email }}</span>
+            </li>
+          }
+        </ul>
+      }
+      @if (searchTerm.length > 0 && filteredStudents.length === 0 && !selectedStudent) {
+        <p class="no-results">Aucun élève trouvé</p>
+      }
+    </div>
+    @if (selectedStudent) {
+      <p class="selected-info">Élève sélectionné : <strong>{{ selectedStudent.pseudo }}</strong>
+        <button class="btn btn-sm btn-secondary" (click)="clearSearch()">Changer</button>
+      </p>
+    }
   </div>
+
+  <!-- Create / Edit grade -->
   <div class="card">
     <h3>{{ editingGradeId ? 'Modifier la note' : 'Ajouter une note' }}</h3>
+    @if (!editingGradeId) {
+      <div class="form-group">
+        <label>Élève</label>
+        <div class="search-container">
+          <input
+            type="text"
+            [(ngModel)]="createSearchTerm"
+            (ngModelChange)="onCreateSearchChange()"
+            placeholder="Rechercher un élève..."
+            class="search-input"
+          />
+          @if (createFilteredStudents.length > 0) {
+            <ul class="search-results">
+              @for (student of createFilteredStudents; track student.id) {
+                <li (click)="selectCreateStudent(student)">
+                  <span class="result-pseudo">{{ student.pseudo }}</span>
+                  <span class="result-email">{{ student.email }}</span>
+                </li>
+              }
+            </ul>
+          }
+          @if (createSearchTerm.length > 0 && createFilteredStudents.length === 0 && !selectedCreateStudent) {
+            <p class="no-results">Aucun élève trouvé</p>
+          }
+        </div>
+        @if (selectedCreateStudent) {
+          <p class="selected-info">
+            <strong>{{ selectedCreateStudent.pseudo }}</strong> ({{ selectedCreateStudent.email }})
+            <button class="btn btn-sm btn-secondary" (click)="clearCreateStudent()">Changer</button>
+          </p>
+        }
+      </div>
+    }
     <form [formGroup]="gradeForm" (ngSubmit)="saveGrade()">
       <div class="form-grid">
         <div class="form-group">
-          <label>ID Etudiant</label>
-          <input type="text" formControlName="studentId" placeholder="UUID etudiant" />
-        </div>
-        <div class="form-group">
-          <label>ID Classe (optionnel)</label>
-          <input type="text" formControlName="classId" placeholder="UUID classe" />
-        </div>
-        <div class="form-group">
-          <label>Matiere</label>
-          <input type="text" formControlName="courseName" placeholder="Ex: Mathematiques" />
+          <label>Matière</label>
+          <div class="autocomplete-container">
+            <input type="text" formControlName="courseName" placeholder="Ex: Mathématiques" class="search-input" />
+            @if (filteredCourseNames.length > 0) {
+              <ul class="autocomplete-list">
+                @for (c of filteredCourseNames; track c) {
+                  <li (click)="selectCourseName(c)">{{ c }}</li>
+                }
+              </ul>
+            }
+          </div>
         </div>
         <div class="form-group">
           <label>Note (/20)</label>
@@ -31,8 +92,9 @@
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary" [disabled]="gradeForm.invalid || saving">
-          {{ saving ? 'Enregistrement...' : (editingGradeId ? 'Modifier' : 'Creer') }}
+        <button type="submit" class="btn btn-primary"
+          [disabled]="gradeForm.invalid || saving || (!editingGradeId && !selectedCreateStudent)">
+          {{ saving ? 'Enregistrement...' : (editingGradeId ? 'Modifier' : 'Créer') }}
         </button>
         @if (editingGradeId) {
           <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
@@ -40,19 +102,20 @@
       </div>
     </form>
   </div>
+
+  <!-- Grades table -->
   @if (loading) { <p class="loading">Chargement...</p> }
-  @if (!loading && searchedStudentId && grades.length === 0) { <p class="empty">Aucune note trouvee.</p> }
+  @if (!loading && selectedStudent && grades.length === 0) { <p class="empty">Aucune note trouvée.</p> }
   @if (grades.length > 0) {
     <table class="data-table">
-      <thead><tr><th>Matiere</th><th>Note</th><th>Classe</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Matière</th><th>Note</th><th>Actions</th></tr></thead>
       <tbody>
         @for (grade of grades; track grade.id) {
           <tr>
             <td>{{ grade.courseName }}</td>
             <td class="grade-value">{{ grade.value }}/20</td>
-            <td>{{ grade.classId || '---' }}</td>
             <td class="actions-cell">
-              <button class="btn btn-sm btn-secondary" (click)="startEdit(grade)">Editer</button>
+              <button class="btn btn-sm btn-secondary" (click)="startEdit(grade)">Éditer</button>
               @if (deleteConfirmId === grade.id) {
                 <button class="btn btn-sm btn-danger" (click)="deleteGrade(grade.id)" [disabled]="deleting">Confirmer</button>
                 <button class="btn btn-sm btn-secondary" (click)="cancelDelete()">Non</button>

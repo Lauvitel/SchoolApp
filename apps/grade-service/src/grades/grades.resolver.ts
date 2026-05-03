@@ -49,6 +49,13 @@ export class GradesResolver {
     return this.gradesService.findClassStats(input);
   }
 
+  @Query(() => [String])
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.PROFESSOR)
+  async courseNames(): Promise<string[]> {
+    return this.gradesService.distinctCourseNames();
+  }
+
   @Mutation(() => GradeModel)
   @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.PROFESSOR)

@@ -65,3 +65,16 @@ export const ADD_STUDENT_TO_CLASS_MUTATION = gql`
     }
   }
 `;
+
+export const CLASSES_WITH_STUDENTS_QUERY = gql`
+  query ClassesWithStudents {
+    classes {
+      id
+      name
+      students {
+        studentId
+      }
+    }
+  }
+`;
+

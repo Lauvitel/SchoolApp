@@ -16,7 +16,7 @@ export class ClassesListComponent implements OnInit {
   classes: SchoolClass[] = [];
   loading = true;
   errorMessage: string | null = null;
-  sortByName: 'asc' | 'desc' | null = null;
+  sortByName: 'ASC' | 'DESC' | null = null;
 
   private classesQuery!: QueryRef<{ classes: SchoolClass[] }>;
 
@@ -44,14 +44,16 @@ export class ClassesListComponent implements OnInit {
 
   toggleSort(): void {
     if (this.sortByName === null) {
-      this.sortByName = 'asc';
-    } else if (this.sortByName === 'asc') {
-      this.sortByName = 'desc';
+      this.sortByName = 'ASC';
+    } else if (this.sortByName === 'ASC') {
+      this.sortByName = 'DESC';
     } else {
       this.sortByName = null;
     }
 
-    const filter = this.sortByName ? { sortByName: this.sortByName } : undefined;
+    const filter = this.sortByName
+      ? { sortByName: this.sortByName }
+      : undefined;
     void this.classesQuery.refetch({ filter });
   }
 }

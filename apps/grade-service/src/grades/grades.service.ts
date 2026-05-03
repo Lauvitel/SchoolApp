@@ -93,6 +93,15 @@ export class GradesService {
     return this.prisma.grade.delete({ where: { id } });
   }
 
+  async distinctCourseNames(): Promise<string[]> {
+    const results = await this.prisma.grade.findMany({
+      distinct: ['courseName'],
+      select: { courseName: true },
+      orderBy: { courseName: 'asc' },
+    });
+    return results.map((r) => r.courseName);
+  }
+
   private async findById(id: string) {
     const grade = await this.prisma.grade.findUnique({ where: { id } });
     if (!grade) {

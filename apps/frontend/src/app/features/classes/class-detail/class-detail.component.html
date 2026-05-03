@@ -19,13 +19,43 @@
 
     @if (isProfessor) {
       <div class="add-student-section">
-        <h3>Ajouter un étudiant</h3>
-        <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()" class="inline-form">
-          <input type="text" formControlName="studentId" placeholder="ID de l'étudiant (UUID)" />
-          <button type="submit" class="btn btn-primary" [disabled]="addStudentForm.invalid || addingStudent">
-            {{ addingStudent ? 'Ajout...' : 'Ajouter' }}
-          </button>
-        </form>
+        @if (!showAddStudent) {
+          <button class="btn btn-primary" (click)="openAddStudent()">Ajouter un élève</button>
+        } @else {
+          <h3>Rechercher un élève</h3>
+          <div class="search-container">
+            <input
+              type="text"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearchChange()"
+              placeholder="Tapez un pseudo ou un email..."
+              class="search-input"
+            />
+            @if (filteredStudents.length > 0) {
+              <ul class="search-results">
+                @for (student of filteredStudents; track student.id) {
+                  <li (click)="selectStudent(student)">
+                    <span class="result-pseudo">{{ student.pseudo }}</span>
+                    <span class="result-email">{{ student.email }}</span>
+                  </li>
+                }
+              </ul>
+            }
+            @if (searchTerm.length > 0 && filteredStudents.length === 0 && !selectedStudent) {
+              <p class="no-results">Aucun élève trouvé</p>
+            }
+          </div>
+          <div class="add-student-actions">
+            <button
+              class="btn btn-primary"
+              [disabled]="!selectedStudent || addingStudent"
+              (click)="addStudent()"
+            >
+              {{ addingStudent ? 'Ajout...' : 'Confirmer' }}
+            </button>
+            <button class="btn btn-secondary" (click)="cancelAddStudent()">Annuler</button>
+          </div>
+        }
       </div>
     }
 
@@ -34,7 +64,8 @@
       <ul class="students-list">
         @for (student of schoolClass.students; track student.id) {
           <li>
-            <span class="student-id">{{ student.studentId }}</span>
+            <span class="student-name">{{ getStudentName(student.studentId) }}</span>
+            <span class="student-email">{{ getStudentEmail(student.studentId) }}</span>
           </li>
         }
       </ul>

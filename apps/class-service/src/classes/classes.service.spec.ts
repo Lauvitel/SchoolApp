@@ -14,6 +14,7 @@ const mockPrisma = {
   },
   classStudent: {
     findUnique: jest.fn(),
+    findFirst: jest.fn(),
     create: jest.fn(),
   },
 };
@@ -146,7 +147,7 @@ describe('ClassesService', () => {
       mockPrisma.schoolClass.findUnique
         .mockResolvedValueOnce(mockClass)
         .mockResolvedValueOnce(mockClassWithStudents);
-      mockPrisma.classStudent.findUnique.mockResolvedValue(null);
+      mockPrisma.classStudent.findFirst.mockResolvedValue(null);
       mockPrisma.classStudent.create.mockResolvedValue({});
 
       const result = await service.addStudentToClass({
@@ -156,9 +157,12 @@ describe('ClassesService', () => {
       expect(result.students).toHaveLength(1);
     });
 
-    it('should throw if student already assigned', async () => {
+    it('should throw if student already assigned to a class', async () => {
       mockPrisma.schoolClass.findUnique.mockResolvedValue(mockClass);
-      mockPrisma.classStudent.findUnique.mockResolvedValue({ id: 'cs-1' });
+      mockPrisma.classStudent.findFirst.mockResolvedValue({
+        id: 'cs-1',
+        class: { name: 'Physics' },
+      });
 
       await expect(
         service.addStudentToClass({

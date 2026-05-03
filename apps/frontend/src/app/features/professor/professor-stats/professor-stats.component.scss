@@ -14,3 +14,5 @@
 .stat-median { border-color: #2563eb; background: #eff6ff; .stat-value { color: #2563eb; } }
 .stat-min { border-color: #dc2626; background: #fef2f2; .stat-value { color: #dc2626; } }
 .stat-max { border-color: #16a34a; background: #f0fdf4; .stat-value { color: #16a34a; } }
+.autocomplete-container { position: relative; }
+.autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #d1d5db; border-top: none; border-radius: 0 0 6px 6px; list-style: none; padding: 0; margin: 0; max-height: 180px; overflow-y: auto; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); li { padding: 10px 14px; cursor: pointer; color: #1e293b; font-size: 0.95rem; &:hover { background-color: #eff6ff; } } }

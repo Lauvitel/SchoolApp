@@ -83,3 +83,10 @@ export const CLASS_STATS_QUERY = gql`
     }
   }
 `;
+
+export const COURSE_NAMES_QUERY = gql`
+  query CourseNames {
+    courseNames
+  }
+`;
+
