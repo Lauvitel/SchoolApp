@@ -2,12 +2,31 @@
   <h2>Mes notes</h2>
 
   <div class="filter-bar">
-    <input
-      type="text"
-      [(ngModel)]="filterCourseName"
-      placeholder="Filtrer par matière (ex: Math, Anglais)"
-      (keyup.enter)="applyFilter()"
-    />
+    <div class="autocomplete-wrapper">
+      <input
+        #filterInput
+        type="text"
+        [(ngModel)]="filterCourseName"
+        placeholder="Filtrer par matière (ex: Math, Anglais)"
+        (input)="onFilterInput()"
+        (keydown)="onKeyDown($event)"
+        (keyup.enter)="applyFilter()"
+        autocomplete="off"
+      />
+      @if (showSuggestions) {
+        <ul class="suggestions-list">
+          @for (suggestion of suggestions; track suggestion; let i = $index) {
+            <li
+              [class.active]="i === activeSuggestionIndex"
+              (mousedown)="selectSuggestion(suggestion)"
+              (mouseenter)="activeSuggestionIndex = i"
+            >
+              {{ suggestion }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
     <button class="btn btn-primary" (click)="applyFilter()">Filtrer</button>
     @if (filterCourseName) {
       <button class="btn btn-secondary" (click)="clearFilter()">Tout afficher</button>
