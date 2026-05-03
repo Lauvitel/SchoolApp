@@ -43,9 +43,16 @@ export class MyGradesComponent implements OnInit {
   }
 
   applyFilter(): void {
-    const filter = this.filterCourseName.trim()
-      ? { courseName: this.filterCourseName.trim() }
-      : undefined;
+    const raw = this.filterCourseName.trim();
+    if (!raw) {
+      void this.gradesQuery.refetch({ filter: undefined });
+      return;
+    }
+
+    const courses = raw.split(',').map((c) => c.trim()).filter((c) => c.length > 0);
+    const filter = courses.length === 1
+      ? { courseName: courses[0] }
+      : { courseNames: courses };
 
     void this.gradesQuery.refetch({ filter });
   }

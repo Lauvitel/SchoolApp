@@ -1,5 +1,10 @@
 <div class="page-container">
-  <h2>Liste des classes</h2>
+  <div class="page-header">
+    <h2>Liste des classes</h2>
+    <button class="btn btn-secondary" (click)="toggleSort()">
+      Tri par nom : {{ sortByName === 'asc' ? 'A→Z' : sortByName === 'desc' ? 'Z→A' : 'Aucun' }}
+    </button>
+  </div>
 
   @if (loading) {
     <p class="loading">Chargement...</p>

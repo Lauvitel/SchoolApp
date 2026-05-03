@@ -1,8 +1,8 @@
 import { gql } from 'apollo-angular';
 
 export const CLASSES_QUERY = gql`
-  query Classes {
-    classes {
+  query Classes($filter: ClassesFilterInput) {
+    classes(filter: $filter) {
       id
       name
       studentCount
