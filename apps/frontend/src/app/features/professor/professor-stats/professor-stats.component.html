@@ -1,0 +1,55 @@
+<div class="page-container">
+  <h2>Statistiques</h2>
+  <div class="stats-grid">
+    <div class="card">
+      <h3>Statistiques par cours</h3>
+      <form [formGroup]="courseForm" (ngSubmit)="searchCourseStats()" class="search-form">
+        <div class="form-group">
+          <label>Nom du cours</label>
+          <input type="text" formControlName="courseName" placeholder="Ex: Math" />
+        </div>
+        <div class="form-group">
+          <label>ID Classe (optionnel)</label>
+          <input type="text" formControlName="classId" placeholder="UUID classe" />
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid || courseLoading">Rechercher</button>
+      </form>
+      @if (courseLoading) { <p class="loading">Chargement...</p> }
+      @if (courseError) { <div class="error-message">{{ courseError }}</div> }
+      @if (courseStats) {
+        <div class="stats-cards">
+          <div class="stat-card"><span class="stat-label">Nombre</span><span class="stat-value">{{ courseStats.count }}</span></div>
+          <div class="stat-card"><span class="stat-label">Moyenne</span><span class="stat-value">{{ courseStats.average }}/20</span></div>
+          <div class="stat-card stat-median"><span class="stat-label">Mediane</span><span class="stat-value">{{ courseStats.median }}/20</span></div>
+          <div class="stat-card stat-min"><span class="stat-label">Min</span><span class="stat-value">{{ courseStats.min }}/20</span></div>
+          <div class="stat-card stat-max"><span class="stat-label">Max</span><span class="stat-value">{{ courseStats.max }}/20</span></div>
+        </div>
+      }
+    </div>
+    <div class="card">
+      <h3>Statistiques par classe</h3>
+      <form [formGroup]="classForm" (ngSubmit)="searchClassStats()" class="search-form">
+        <div class="form-group">
+          <label>ID Classe</label>
+          <input type="text" formControlName="classId" placeholder="UUID classe" />
+        </div>
+        <div class="form-group">
+          <label>Cours (optionnel)</label>
+          <input type="text" formControlName="courseName" placeholder="Nom du cours" />
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="classForm.invalid || classLoading">Rechercher</button>
+      </form>
+      @if (classLoading) { <p class="loading">Chargement...</p> }
+      @if (classError) { <div class="error-message">{{ classError }}</div> }
+      @if (classStats) {
+        <div class="stats-cards">
+          <div class="stat-card"><span class="stat-label">Nombre</span><span class="stat-value">{{ classStats.count }}</span></div>
+          <div class="stat-card"><span class="stat-label">Moyenne</span><span class="stat-value">{{ classStats.average }}/20</span></div>
+          <div class="stat-card stat-median"><span class="stat-label">Mediane</span><span class="stat-value">{{ classStats.median }}/20</span></div>
+          <div class="stat-card stat-min"><span class="stat-label">Min</span><span class="stat-value">{{ classStats.min }}/20</span></div>
+          <div class="stat-card stat-max"><span class="stat-label">Max</span><span class="stat-value">{{ classStats.max }}/20</span></div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

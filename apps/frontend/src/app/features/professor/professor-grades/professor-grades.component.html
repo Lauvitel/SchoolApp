@@ -1,0 +1,68 @@
+<div class="page-container">
+  <h2>Gestion des notes</h2>
+  @if (errorMessage) { <div class="error-message">{{ errorMessage }}</div> }
+  @if (successMessage) { <div class="success-message">{{ successMessage }}</div> }
+  <div class="card">
+    <h3>Rechercher les notes d un etudiant</h3>
+    <form [formGroup]="searchForm" (ngSubmit)="searchGrades()" class="inline-form">
+      <input type="text" formControlName="studentId" placeholder="ID de l etudiant" />
+      <button type="submit" class="btn btn-primary" [disabled]="searchForm.invalid || loading">Rechercher</button>
+    </form>
+  </div>
+  <div class="card">
+    <h3>{{ editingGradeId ? 'Modifier la note' : 'Ajouter une note' }}</h3>
+    <form [formGroup]="gradeForm" (ngSubmit)="saveGrade()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>ID Etudiant</label>
+          <input type="text" formControlName="studentId" placeholder="UUID etudiant" />
+        </div>
+        <div class="form-group">
+          <label>ID Classe (optionnel)</label>
+          <input type="text" formControlName="classId" placeholder="UUID classe" />
+        </div>
+        <div class="form-group">
+          <label>Matiere</label>
+          <input type="text" formControlName="courseName" placeholder="Ex: Mathematiques" />
+        </div>
+        <div class="form-group">
+          <label>Note (/20)</label>
+          <input type="number" formControlName="value" min="0" max="20" step="0.5" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="gradeForm.invalid || saving">
+          {{ saving ? 'Enregistrement...' : (editingGradeId ? 'Modifier' : 'Creer') }}
+        </button>
+        @if (editingGradeId) {
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+        }
+      </div>
+    </form>
+  </div>
+  @if (loading) { <p class="loading">Chargement...</p> }
+  @if (!loading && searchedStudentId && grades.length === 0) { <p class="empty">Aucune note trouvee.</p> }
+  @if (grades.length > 0) {
+    <table class="data-table">
+      <thead><tr><th>Matiere</th><th>Note</th><th>Classe</th><th>Actions</th></tr></thead>
+      <tbody>
+        @for (grade of grades; track grade.id) {
+          <tr>
+            <td>{{ grade.courseName }}</td>
+            <td class="grade-value">{{ grade.value }}/20</td>
+            <td>{{ grade.classId || '---' }}</td>
+            <td class="actions-cell">
+              <button class="btn btn-sm btn-secondary" (click)="startEdit(grade)">Editer</button>
+              @if (deleteConfirmId === grade.id) {
+                <button class="btn btn-sm btn-danger" (click)="deleteGrade(grade.id)" [disabled]="deleting">Confirmer</button>
+                <button class="btn btn-sm btn-secondary" (click)="cancelDelete()">Non</button>
+              } @else {
+                <button class="btn btn-sm btn-danger" (click)="confirmDelete(grade.id)">Supprimer</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
